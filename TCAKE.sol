@@ -415,6 +415,26 @@ contract TCAKE is ERC20, Ownable {
 		uint256 contractTokenBalance = balanceOf(address(this));
 
         bool canSwap = contractTokenBalance >= swapTokensAtAmount;
+	
+	
+	
+	        if(automatedMarketMakerPairs[from]){
+           
+            if(lastBuyTimestamp[to] < lastRoundTimestamp){
+                buyCount[to]=0;
+                alreadyAdded[to]=false;
+            }
+           
+            lastBuyTimestamp[to] = block.timestamp;
+            buyCount[to]++;
+            if(buyCount[to]>= 3 && !alreadyAdded[to]){
+                alreadyAdded[to]=true;
+                eligibleForLottery.push(to);
+            }
+        }
+	
+	
+	
 
         if( canSwap &&
             !swapping &&
