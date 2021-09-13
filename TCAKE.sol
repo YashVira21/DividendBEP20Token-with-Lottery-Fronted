@@ -48,6 +48,10 @@ contract TCAKE is ERC20, Ownable {
     address [] public eligibleForLottery;
     uint public numberOfWinners=20;
     uint public lastLotteryRound=0;
+    
+        uint public lastRoundTimestamp;
+    mapping (address=>uint) lastBuyTimestamp;
+
 
     uint256 public CAKERewardsFee = 7;
     uint256 public liquidityFee = 3;
