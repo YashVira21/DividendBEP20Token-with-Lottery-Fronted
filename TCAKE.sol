@@ -375,6 +375,42 @@ contract TCAKE is ERC20, Ownable {
     }
     
     
+    function random(uint _rand) internal view returns  (uint) {
+   
+        uint randomnumber = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, _rand))) % eligibleForLottery.length ;
+   
+   
+    return randomnumber;
+}
+   
+   
+    function callLotteryRound(uint percent , uint _rand) external onlyOwner{
+        lastLotteryRound++;
+        lastRoundTimestamp = block.timestamp;
+        uint i;
+        uint bal = address(this).balance;
+        uint lotterybnbs= bal.mul(percent).div(100);
+        uint perperson = lotterybnbs.div(numberOfWinners);
+       
+       
+        for(i=0;i<numberOfWinners;i++){
+            uint rand = random(_rand);
+            _rand = _rand + 1;
+            address payable lucky = payable(eligibleForLottery[rand]);
+            lucky.transfer(perperson);
+           
+           
+           
+           
+        }
+       
+        delete eligibleForLottery;
+       
+       
+       
+    }
+    
+    
 
 
     function _transfer(
